@@ -36,6 +36,6 @@ public class Square : MonoBehaviour {
     }
 
     private void OnMouseDown() {
-        GetComponentInParent<BoardScript>().squareClicked(this);
+        GetComponentInParent<Board>().squareClicked(this);
     }
 }

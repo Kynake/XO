@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoardScript : MonoBehaviour {
+public class Board : MonoBehaviour {
 
     public void squareClicked(Square square) {
         switch(square.CurrentSymbol) {
