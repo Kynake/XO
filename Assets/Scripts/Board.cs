@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoardScript : MonoBehaviour {
 
-    public void squareClicked(SquareScript square) {
+    public void squareClicked(Square square) {
         switch(square.CurrentSymbol) {
             case Symbol.None:
                 square.CurrentSymbol = Symbol.Cross;

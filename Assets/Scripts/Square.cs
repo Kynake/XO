@@ -8,7 +8,7 @@ public enum Symbol {
     Nought
 }
 
-public class SquareScript : MonoBehaviour {
+public class Square : MonoBehaviour {
     public int line;
     public int column;
 
