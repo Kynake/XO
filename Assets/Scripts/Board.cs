@@ -19,4 +19,19 @@ public class Board : MonoBehaviour {
                 break;
         }
     }
+
+    public List<Symbol> boardState {
+        get {
+            List<Square> squares = new List<Square>(GetComponentsInChildren<Square>());
+            return squares.ConvertAll<Symbol>(square => square.CurrentSymbol);
+        }
+        set {
+            Square[] squares = GetComponentsInChildren<Square>();
+            for (int i = 0; i < squares.Length; i++) {
+                if(value[i] != squares[i].CurrentSymbol) {
+                    squares[i].CurrentSymbol = value[i];
+                }
+            }
+        }
+    }
 }

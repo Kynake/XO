@@ -9,29 +9,23 @@ public enum Symbol {
 }
 
 public class Square : MonoBehaviour {
-    public int line;
-    public int column;
-
     public GameObject crossMesh;
     public GameObject noughtMesh;
+
+    private Symbol _currentSymbol;
 
     public Symbol CurrentSymbol {
         set {
             crossMesh.SetActive(value == Symbol.Cross);
             noughtMesh.SetActive(value == Symbol.Nought);
+            _currentSymbol = value;
         }
         get {
-            if(crossMesh.activeSelf) {
-                return Symbol.Cross;
-            }
-            if(noughtMesh.activeSelf) {
-                return Symbol.Nought;
-            }
-            return Symbol.None;
+            return _currentSymbol;
         }
     }
 
-    void Start() {
+    private void Start() {
         CurrentSymbol = Symbol.None;
     }
 
