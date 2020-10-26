@@ -26,7 +26,7 @@ public class Square : MonoBehaviour {
     }
 
     private void Start() {
-        CurrentSymbol = Symbol.None;
+        CurrentSymbol = Symbol.Cross;
     }
 
     private void OnMouseDown() {
