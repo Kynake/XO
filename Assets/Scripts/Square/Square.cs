@@ -2,19 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Symbol {
-    None,
-    Cross,
-    Nought
-}
-
 public class Square : MonoBehaviour {
     public GameObject crossMesh;
     public GameObject noughtMesh;
 
     private Symbol _currentSymbol;
 
-    public Symbol CurrentSymbol {
+    public Symbol currentSymbol {
         set {
             crossMesh.SetActive(value == Symbol.Cross);
             noughtMesh.SetActive(value == Symbol.Nought);
@@ -26,7 +20,6 @@ public class Square : MonoBehaviour {
     }
 
     private void Start() {
-        CurrentSymbol = Symbol.Cross;
     }
 
     private void OnMouseDown() {
