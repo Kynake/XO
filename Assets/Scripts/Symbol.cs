@@ -1,20 +1,9 @@
 ﻿public enum Symbol {
-    None,
-    Cross,
-    Nought
+    None = 0,
+    Cross = 1,
+    Nought = -1
 }
 
-public class SymbolOperations {
-    public static Symbol other(Symbol s) {
-        switch(s) {
-            case Symbol.Cross:
-                return Symbol.Nought;
-
-            case Symbol.Nought:
-                return Symbol.Cross;
-
-            default:
-                return Symbol.None;
-        }
-    }
+public static class SymbolExtensions {
+    public static Symbol other(this Symbol s) => (Symbol) (-(int) s);
 }

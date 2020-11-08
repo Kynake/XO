@@ -7,6 +7,7 @@ public class Square : MonoBehaviour {
     public GameObject noughtMesh;
 
     private Symbol _currentSymbol;
+    private Board _parentBoard;
 
     public Symbol currentSymbol {
         set {
@@ -19,10 +20,11 @@ public class Square : MonoBehaviour {
         }
     }
 
-    private void Start() {
+    private void Awake() {
+        _parentBoard = GetComponentInParent<Board>();
     }
 
     private void OnMouseDown() {
-        GetComponentInParent<Board>().squareClicked(this);
+        _parentBoard.doPlayerMove(this);
     }
 }
