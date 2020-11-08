@@ -54,11 +54,11 @@ public class Board : MonoBehaviour {
   }
 
   public IEnumerator doAIMove() {
-    // Wait AI timer, so ai moves are not instantaneous
-    yield return new WaitForSeconds(AIWait);
-
     // If current player is associated with an AI algorithm
     if(AIPlayers.Contains(_currentPlayer)) {
+      // Wait AI timer, so ai moves are not instantaneous
+      yield return new WaitForSeconds(AIWait);
+
       int AIPos = _AIBehaviour.nextMove(_currentPlayer, _boardState);
       doMove(AIPos);
     }
