@@ -25,13 +25,13 @@ public class Board : MonoBehaviour {
     _AIBehaviour = new TestAI();
 
     foreach (var square in _boardSquares) {
-        _boardState.Add(Symbol.None);
-        square.currentSymbol = Symbol.None;
+      _boardState.Add(Symbol.None);
+      square.currentSymbol = Symbol.None;
     }
 
     float boardSize = Mathf.Sqrt(_boardState.Count);
     if(boardSize != (int) boardSize){
-        print($"Not a Square Board: {_boardState.Count}");
+      print($"Not a Square Board: {_boardState.Count}");
     }
 
     // Initialize game
@@ -45,7 +45,7 @@ public class Board : MonoBehaviour {
   public void doPlayerMove(Square square) {
     // Do not accept player moves when it's the AI's turn
     if(AIPlayers.Contains(_currentPlayer)) {
-        return;
+      return;
     }
 
     // Player Move
@@ -59,8 +59,8 @@ public class Board : MonoBehaviour {
 
     // If current player is associated with an AI algorithm
     if(AIPlayers.Contains(_currentPlayer)) {
-        int AIPos = _AIBehaviour.nextMove(_currentPlayer, _boardState);
-        doMove(AIPos);
+      int AIPos = _AIBehaviour.nextMove(_currentPlayer, _boardState);
+      doMove(AIPos);
     }
   }
 
@@ -73,7 +73,7 @@ public class Board : MonoBehaviour {
      * Square of desired play is already occupied
      */
     if(_winner != Symbol.None || _currentPlayer == Symbol.None || index < 0 || _boardState[index] != Symbol.None) {
-        return;
+      return;
     }
 
     _boardState[index] = _currentPlayer;
@@ -82,22 +82,22 @@ public class Board : MonoBehaviour {
     _winner = checkWinner(_boardState);
     string winnerText;
     switch (_winner) {
-        case Symbol.Cross:
-            winnerText = "Cross";
-            break;
+      case Symbol.Cross:
+        winnerText = "Cross";
+        break;
 
-        case Symbol.Nought:
-            winnerText = "Nought";
-            break;
+      case Symbol.Nought:
+        winnerText = "Nought";
+        break;
 
-        default:
-            winnerText = "None";
-            break;
+      default:
+        winnerText = "None";
+        break;
     }
     print($"Winner: {winnerText}");
 
     if(_winner != Symbol.None) {
-        return;
+      return;
     }
 
     // Prompt next player
