@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class Board : MonoBehaviour {
 
+    // Game Logic
     public Symbol startingPlayer = Symbol.None;
-    public List<Symbol> AIPlayers = new List<Symbol>();
 
+    private Symbol _winner;
     private Symbol _currentPlayer;
     private List<Symbol> _boardState;
     private List<Square> _boardSquares;
 
-    private Symbol _winner;
+    // AI Stuff
+    public float AIWait = 0;
+    public List<Symbol> AIPlayers = new List<Symbol>();
+
+    private AI _AIBehaviour;
 
     private void Awake() {
         // Initialize Squares and Game Objects
         _boardState = new List<Symbol>();
         _boardSquares = new List<Square>(GetComponentsInChildren<Square>());
+        _AIBehaviour = new TestAI();
 
         foreach (var square in _boardSquares) {
             _boardState.Add(Symbol.None);
@@ -33,7 +39,7 @@ public class Board : MonoBehaviour {
         _winner = Symbol.None;
 
         // Do first AI move, if necessary
-        doAIMove();
+        StartCoroutine(doAIMove());
     }
 
     public void doPlayerMove(Square square) {
@@ -47,10 +53,14 @@ public class Board : MonoBehaviour {
         doMove(index);
     }
 
-    public void doAIMove() {
+    public IEnumerator doAIMove() {
+        // Wait AI timer, so ai moves are not instantaneous
+        yield return new WaitForSeconds(AIWait);
+
+        // If current player is associated with an AI algorithm
         if(AIPlayers.Contains(_currentPlayer)) {
-            // int AIPos = minimax();
-            // doMove(AIPos);
+            int AIPos = _AIBehaviour.nextMove(_currentPlayer, _boardState);
+            doMove(AIPos);
         }
     }
 
@@ -83,7 +93,7 @@ public class Board : MonoBehaviour {
         _currentPlayer = _currentPlayer.other();
 
         // Do next AI move, if necessary
-        doAIMove();
+        StartCoroutine(doAIMove());
     }
 
     public Symbol checkWinner(List<Symbol> board) {
