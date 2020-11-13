@@ -22,7 +22,7 @@ public class Board : MonoBehaviour {
     // Initialize Squares and Game Objects
     _boardState = new List<Symbol>();
     _boardSquares = new List<Square>(GetComponentsInChildren<Square>());
-    _AIBehaviour = new TestAI();
+    _AIBehaviour = new Minimax();
 
     foreach (var square in _boardSquares) {
       _boardState.Add(Symbol.None);
@@ -59,8 +59,9 @@ public class Board : MonoBehaviour {
       // Wait AI timer, so ai moves are not instantaneous
       yield return new WaitForSeconds(AIWait);
 
-      int AIPos = _AIBehaviour.nextMove(_currentPlayer, _boardState);
-      doMove(AIPos);
+      if(_AIBehaviour.nextMove(_currentPlayer, _boardState, out int index)) {
+        doMove(index);
+      }
     }
   }
 
@@ -69,10 +70,9 @@ public class Board : MonoBehaviour {
      *
      * Game has been won
      * Current player is None (game did not start)
-     * Index of Square to play is invalid
      * Square of desired play is already occupied
      */
-    if(_winner != Symbol.None || _currentPlayer == Symbol.None || index < 0 || _boardState[index] != Symbol.None) {
+    if(_winner != Symbol.None || _currentPlayer == Symbol.None || _boardState[index] != Symbol.None) {
       return;
     }
 
@@ -107,7 +107,7 @@ public class Board : MonoBehaviour {
     StartCoroutine(doAIMove());
   }
 
-  public Symbol checkWinner(List<Symbol> board) {
+  public static Symbol checkWinner(List<Symbol> board) {
     int boardSize = (int) Mathf.Sqrt(board.Count);
 
     List<int> countRows = new List<int>(boardSize);

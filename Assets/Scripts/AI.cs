@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 
 public interface AI {
-  int nextMove(Symbol currentPlayer, List<Symbol> board);
+  bool nextMove(Symbol currentPlayer, List<Symbol> board, out int index);
 }
 
 public class TestAI : AI {
-  public int nextMove(Symbol currentPlayer, List<Symbol> board) {
+  public bool nextMove(Symbol currentPlayer, List<Symbol> board, out int index) {
+    index = -1;
     for(int i = 0; i < board.Count; i++) {
       if(board[i] == Symbol.None) {
-        return i;
+        index = i;
+        return true;
       }
     }
 
-    return -1;
+    return false;
   }
 
 }
