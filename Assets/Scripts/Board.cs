@@ -7,6 +7,7 @@ public class Board : MonoBehaviour {
   // Game Logic
   public Symbol startingPlayer = Symbol.None;
 
+  private GameState _gameState;
   private Symbol _winner;
   private Symbol _currentPlayer;
   private List<Symbol> _boardState;
@@ -35,11 +36,16 @@ public class Board : MonoBehaviour {
     }
 
     // Initialize game
+    _gameState = GameState.NotStarted;
     _currentPlayer = startingPlayer;
     _winner = Symbol.None;
 
     // Do first AI move, if necessary
     StartCoroutine(doAIMove());
+  }
+
+  public void startGame() {
+
   }
 
   public void doPlayerMove(Square square) {
@@ -51,6 +57,9 @@ public class Board : MonoBehaviour {
     // Player Move
     int index = _boardSquares.IndexOf(square);
     doMove(index);
+    if(!_boardState.Contains(Symbol.None)) { // No more squares available
+      _gameState = GameState.Ended;
+    }
   }
 
   public IEnumerator doAIMove() {
@@ -61,6 +70,8 @@ public class Board : MonoBehaviour {
 
       if(_AIBehaviour.nextMove(_currentPlayer, _boardState, out int index)) {
         doMove(index);
+      } else { // No possible play
+        _gameState = GameState.Ended;
       }
     }
   }
@@ -68,11 +79,11 @@ public class Board : MonoBehaviour {
   public void doMove(int index) {
     /* Do not if any of these is true:
      *
-     * Game has been won
+     * Game Not Started or Finished
      * Current player is None (game did not start)
      * Square of desired play is already occupied
      */
-    if(_winner != Symbol.None || _currentPlayer == Symbol.None || _boardState[index] != Symbol.None) {
+    if(_gameState != GameState.InProgress || _currentPlayer == Symbol.None || _boardState[index] != Symbol.None) {
       return;
     }
 
@@ -97,6 +108,7 @@ public class Board : MonoBehaviour {
     print($"Winner: {winnerText}");
 
     if(_winner != Symbol.None) {
+      _gameState = GameState.Ended;
       return;
     }
 
