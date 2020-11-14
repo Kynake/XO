@@ -1,0 +1,9 @@
+Images:
+All Pillars Point to Eta (PIA03515) - NASA/JPL-Caltech/University of Colorado, images-assets.nasa.gov/image/PIA03515/PIA03515~orig.jpg
+
+Audio:
+ambient-loop.ogg (Slowed Down 30%) - Original by Gobusto, opengameart.org/content/ambient-noise
+Menu Clicks 1 and 2 - Original by dawith, opengameart.org/content/zippo-click-sound
+
+VFX:
+Blur Shader: denisnk, pastebin.com/wVxpxpvt
