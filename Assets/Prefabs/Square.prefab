@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f264b9638660fed4181611e64dc7342b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinRate: 60
-  bobbingFrequency: 1
-  bobbingAmplitude: 0.15
+  spinRate: 35
+  bobbingFrequency: 2
+  bobbingAmplitude: 0.1
 --- !u!1 &8531212656753996899
 GameObject:
   m_ObjectHideFlags: 0
