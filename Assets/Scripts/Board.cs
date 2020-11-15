@@ -23,15 +23,17 @@ public class Board : MonoBehaviour {
   private EndMenu _endMenu;
 
   private void Awake() {
-    // Initialize Squares and Game Objects
     _boardSquares = new List<Square>(GetComponentsInChildren<Square>());
 
     _endMenu = endMenu.GetComponent<EndMenu>();
+  }
 
+  private void Start() {
     initializeGame();
   }
 
   private void initializeGame() {
+    // Initialize Squares and Game Objects
     _boardState = new List<Symbol>();
 
     foreach (var square in _boardSquares) {

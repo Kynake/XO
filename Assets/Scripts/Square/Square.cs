@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Square : MonoBehaviour {
-  public GameObject crossMesh;
-  public GameObject noughtMesh;
+
 
   private Symbol _currentSymbol;
   private Board _parentBoard;
+  private SquareArt _squareArt;
 
   public Symbol currentSymbol {
     set {
-      crossMesh.SetActive(value == Symbol.Cross);
-      noughtMesh.SetActive(value == Symbol.Nought);
+      _squareArt.currentSymbol = value;
       _currentSymbol = value;
     }
     get {
@@ -22,6 +21,7 @@ public class Square : MonoBehaviour {
 
   private void Awake() {
     _parentBoard = GetComponentInParent<Board>();
+    _squareArt = GetComponentInChildren<SquareArt>();
   }
 
   private void OnMouseDown() {
