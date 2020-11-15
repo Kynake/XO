@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Minimax : AI {
+public class MinimaxAI : AI {
   private struct Move {
     public int index;
     public int score;

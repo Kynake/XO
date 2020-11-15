@@ -16,14 +16,12 @@ public class Board : MonoBehaviour {
   // AI Stuff
   public float AIWait = 0;
   public List<Symbol> AIPlayers = new List<Symbol>();
-
-  private AI _AIBehaviour;
+  public List<AIType> AIBehaviors = new List<AIType>();
 
   private void Awake() {
     // Initialize Squares and Game Objects
     _boardState = new List<Symbol>();
     _boardSquares = new List<Square>(GetComponentsInChildren<Square>());
-    _AIBehaviour = new Minimax();
 
     foreach (var square in _boardSquares) {
       _boardState.Add(Symbol.None);
@@ -64,11 +62,12 @@ public class Board : MonoBehaviour {
 
   public IEnumerator doAIMove() {
     // If current player is associated with an AI algorithm
-    if(AIPlayers.Contains(_currentPlayer)) {
+    int aiIndex = AIPlayers.IndexOf(_currentPlayer);
+    if(aiIndex > -1 && AIBehaviors[aiIndex] != AIType.Human) {
       // Wait AI timer, so ai moves are not instantaneous
       yield return new WaitForSeconds(AIWait);
 
-      if(_AIBehaviour.nextMove(_currentPlayer, _boardState, out int index)) {
+      if(AIBehaviors[aiIndex].getInstance().nextMove(_currentPlayer, _boardState, out int index)) {
         doMove(index);
       } else { // No possible play
         _gameState = GameState.Ended;
