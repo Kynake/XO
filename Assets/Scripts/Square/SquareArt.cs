@@ -29,22 +29,32 @@ public class SquareArt : MonoBehaviour {
   private float _bobbingCycleTimeElapsed;
   private Vector3 _previousBobbingAmount;
 
-  void Awake() {
+  // Holding vars
+  private Vector3 _newBobbingAmount;
+  private Vector3 _rotationVector;
 
+  private void Awake() {
 
-    // _bobbingCycleTimeElapsed = Random.Range(0f, 2*Mathf.PI);
-    _bobbingCycleTimeElapsed = 0;
-    _previousBobbingAmount = Vector3.zero;
   }
 
-  void Update() {
+  private void Start() {
+    _bobbingCycleTimeElapsed = Random.Range(0f, 2*Mathf.PI);
+    _bobbingCycleTimeElapsed = 0;
+    _previousBobbingAmount = Vector3.zero;
+
+    // Initialize holding vars
+    _newBobbingAmount = Vector3.zero;
+    _rotationVector = Vector3.zero;
+  }
+
+  private void Update() {
     _bobbingCycleTimeElapsed += Time.deltaTime % (2 * Mathf.PI);
-    Vector3 newBobbingAmount = new Vector3(0, Mathf.Sin(_bobbingCycleTimeElapsed * (2 * Mathf.PI / bobbingFrequency)) * bobbingAmplitude, 0);
+    _newBobbingAmount.Set(0, Mathf.Sin(_bobbingCycleTimeElapsed * (2 * Mathf.PI / bobbingFrequency)) * bobbingAmplitude, 0);
 
-    transform.position += (newBobbingAmount - _previousBobbingAmount);
-    _previousBobbingAmount = newBobbingAmount;
+    transform.position += (_newBobbingAmount - _previousBobbingAmount);
+    _previousBobbingAmount = _newBobbingAmount;
 
-
-    transform.Rotate(new Vector3(0, spinRate * Time.deltaTime, 0));
+    _rotationVector.Set(0, spinRate * Time.deltaTime, 0);
+    transform.Rotate(_rotationVector);
   }
 }
