@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Input
+  - Human
+  - Easy
+  - Medium
+  - Hard
   layers:
   - Default
   - TransparentFX

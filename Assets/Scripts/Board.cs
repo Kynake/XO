@@ -23,17 +23,20 @@ public class Board : MonoBehaviour {
     _boardState = new List<Symbol>();
     _boardSquares = new List<Square>(GetComponentsInChildren<Square>());
 
-    foreach (var square in _boardSquares) {
-      _boardState.Add(Symbol.None);
-      square.currentSymbol = Symbol.None;
-    }
-
     float boardSize = Mathf.Sqrt(_boardState.Count);
     if(boardSize != (int) boardSize){
       print($"Not a Square Board: {_boardState.Count}");
     }
 
-    // Initialize game
+    initializeGame();
+  }
+
+  private void initializeGame() {
+    foreach (var square in _boardSquares) {
+      _boardState.Add(Symbol.None);
+      square.currentSymbol = Symbol.None;
+    }
+
     _gameState = GameState.NotStarted;
     _currentPlayer = startingPlayer;
     _winner = Symbol.None;
@@ -44,6 +47,33 @@ public class Board : MonoBehaviour {
 
     // Do first AI move, if necessary
     StartCoroutine(doAIMove());
+  }
+
+  public void setPlayerOneAI(AIType difficulty) {
+    setPlayerAI(_currentPlayer, difficulty);
+  }
+
+  public void setPlayerTwoAI(AIType difficulty) {
+    setPlayerAI(_currentPlayer.other(), difficulty);
+  }
+
+  private void setPlayerAI(Symbol player, AIType difficulty) {
+    int index;
+    if(difficulty == AIType.Human) { // Remove AI player, if existing
+      index = AIPlayers.IndexOf(player);
+      if(index != -1) {
+        AIPlayers.RemoveAt(index);
+        AIBehaviors.RemoveAt(index);
+      }
+    } else {
+      index = AIPlayers.IndexOf(player);
+      if(index != -1) {
+        AIBehaviors[index] = difficulty;
+      } else {
+        AIPlayers.Add(player);
+        AIBehaviors.Add(difficulty);
+      }
+    }
   }
 
   public void doPlayerMove(Square square) {
