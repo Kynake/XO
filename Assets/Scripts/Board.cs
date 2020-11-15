@@ -18,20 +18,22 @@ public class Board : MonoBehaviour {
   public List<Symbol> AIPlayers = new List<Symbol>();
   public List<AIType> AIBehaviors = new List<AIType>();
 
+  public GameObject canvas;
+  public GameObject endMenu;
+  private EndMenu _endMenu;
+
   private void Awake() {
     // Initialize Squares and Game Objects
-    _boardState = new List<Symbol>();
     _boardSquares = new List<Square>(GetComponentsInChildren<Square>());
 
-    float boardSize = Mathf.Sqrt(_boardState.Count);
-    if(boardSize != (int) boardSize){
-      print($"Not a Square Board: {_boardState.Count}");
-    }
+    _endMenu = endMenu.GetComponent<EndMenu>();
 
     initializeGame();
   }
 
   private void initializeGame() {
+    _boardState = new List<Symbol>();
+
     foreach (var square in _boardSquares) {
       _boardState.Add(Symbol.None);
       square.currentSymbol = Symbol.None;
@@ -76,6 +78,18 @@ public class Board : MonoBehaviour {
     }
   }
 
+  private IEnumerator endGame() {
+    _gameState = GameState.Ended;
+
+    yield return new WaitForSeconds(AIWait);
+
+    canvas.SetActive(true);
+    endMenu.SetActive(true);
+    _endMenu.showEndgame(_winner, startingPlayer);
+
+    initializeGame();
+  }
+
   public void doPlayerMove(Square square) {
     // Do not accept player moves when it's the AI's turn
     if(AIPlayers.Contains(_currentPlayer)) {
@@ -86,7 +100,7 @@ public class Board : MonoBehaviour {
     int index = _boardSquares.IndexOf(square);
     doMove(index);
     if(!_boardState.Contains(Symbol.None)) { // No more squares available
-      _gameState = GameState.Ended;
+      StartCoroutine(endGame());
     }
   }
 
@@ -100,7 +114,7 @@ public class Board : MonoBehaviour {
       if(AIBehaviors[aiIndex].getInstance().nextMove(_currentPlayer, _boardState, out int index)) {
         doMove(index);
       } else { // No possible play
-        _gameState = GameState.Ended;
+        StartCoroutine(endGame());
       }
     }
   }
@@ -120,24 +134,9 @@ public class Board : MonoBehaviour {
     _boardSquares[index].currentSymbol = _currentPlayer;
 
     _winner = checkWinner(_boardState);
-    string winnerText;
-    switch (_winner) {
-      case Symbol.Cross:
-        winnerText = "Cross";
-        break;
-
-      case Symbol.Nought:
-        winnerText = "Nought";
-        break;
-
-      default:
-        winnerText = "None";
-        break;
-    }
-    print($"Winner: {winnerText}");
 
     if(_winner != Symbol.None) {
-      _gameState = GameState.Ended;
+      StartCoroutine(endGame());
       return;
     }
 

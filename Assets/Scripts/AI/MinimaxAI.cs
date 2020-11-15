@@ -14,9 +14,6 @@ public class MinimaxAI : AI {
     List<Symbol> boardClone = new List<Symbol>(board);
     bool res = minimaxMove(currentPlayer, boardClone, out var move);
 
-    Debug.Log($"Index: {move.index}");
-    Debug.Log($"Score: {move.score}");
-
     index = move.index;
     return res;
   }

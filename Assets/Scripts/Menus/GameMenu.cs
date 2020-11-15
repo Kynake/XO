@@ -15,7 +15,6 @@ public class GameMenu : MonoBehaviour {
 
   public GameObject canvas;
   public GameObject board;
-  public GameObject scoreMenu;
 
   private void Awake() {
     _playerOneToggles = playerOneOptions.ConvertAll<Toggle>(button => button.GetComponent<Toggle>());
@@ -30,7 +29,6 @@ public class GameMenu : MonoBehaviour {
       return;
     }
 
-    scoreMenu.SetActive(true);
     canvas.SetActive(false);
     gameObject.SetActive(false);
     board.GetComponent<Board>().startGame();
