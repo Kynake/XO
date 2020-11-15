@@ -9,6 +9,8 @@ TagManager:
   - Easy
   - Medium
   - Hard
+  - Player One
+  - Player Two
   layers:
   - Default
   - TransparentFX
