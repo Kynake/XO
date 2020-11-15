@@ -39,13 +39,13 @@ public class Board : MonoBehaviour {
     _gameState = GameState.NotStarted;
     _currentPlayer = startingPlayer;
     _winner = Symbol.None;
-
-    // Do first AI move, if necessary
-    StartCoroutine(doAIMove());
   }
 
   public void startGame() {
+    _gameState = GameState.InProgress;
 
+    // Do first AI move, if necessary
+    StartCoroutine(doAIMove());
   }
 
   public void doPlayerMove(Square square) {
