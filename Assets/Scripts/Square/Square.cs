@@ -19,12 +19,12 @@ public class Square : MonoBehaviour {
     }
   }
 
-  private void Awake() {
+  void Awake() {
     _parentBoard = GetComponentInParent<Board>();
     _squareArt = GetComponentInChildren<SquareArt>();
   }
 
-  private void OnMouseDown() {
+  void OnMouseDown() {
     _parentBoard.doPlayerMove(this);
   }
 }

@@ -16,7 +16,7 @@ public class GameMenu : MonoBehaviour {
   public GameObject canvas;
   public GameObject board;
 
-  private void Awake() {
+  void Awake() {
     _playerOneToggles = playerOneOptions.ConvertAll<Toggle>(button => button.GetComponent<Toggle>());
     _playerTwoToggles = playerTwoOptions.ConvertAll<Toggle>(button => button.GetComponent<Toggle>());
   }

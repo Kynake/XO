@@ -10,7 +10,7 @@ public class EndMenu : MonoBehaviour {
 
   private Text _winner;
 
-  private void Awake() {
+  void Awake() {
     _winner = winnerText.GetComponent<Text>();
   }
 

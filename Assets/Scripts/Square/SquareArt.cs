@@ -33,11 +33,11 @@ public class SquareArt : MonoBehaviour {
   private Vector3 _newBobbingAmount;
   private Vector3 _rotationVector;
 
-  private void Awake() {
+  void Awake() {
 
   }
 
-  private void Start() {
+  void Start() {
     _bobbingCycleTimeElapsed = Random.Range(0f, 2*Mathf.PI);
     _bobbingCycleTimeElapsed = 0;
     _previousBobbingAmount = Vector3.zero;
@@ -47,7 +47,7 @@ public class SquareArt : MonoBehaviour {
     _rotationVector = Vector3.zero;
   }
 
-  private void Update() {
+  void Update() {
     _bobbingCycleTimeElapsed += Time.deltaTime % (2 * Mathf.PI);
     _newBobbingAmount.Set(0, Mathf.Sin(_bobbingCycleTimeElapsed * (2 * Mathf.PI / bobbingFrequency)) * bobbingAmplitude, 0);
 

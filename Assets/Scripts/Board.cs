@@ -22,13 +22,13 @@ public class Board : MonoBehaviour {
   public GameObject endMenu;
   private EndMenu _endMenu;
 
-  private void Awake() {
+  void Awake() {
     _boardSquares = new List<Square>(GetComponentsInChildren<Square>());
 
     _endMenu = endMenu.GetComponent<EndMenu>();
   }
 
-  private void Start() {
+  void Start() {
     initializeGame();
   }
 
