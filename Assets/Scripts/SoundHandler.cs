@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputHandler : MonoBehaviour {
+public class SoundHandler : MonoBehaviour {
   public List<AudioClip> clickSounds = new List<AudioClip>();
   private AudioSource _clickPlayer;
 
