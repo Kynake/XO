@@ -10,6 +10,7 @@ using UnityEngine;
  * e.g. Animation
  */
 public class SquareArt : MonoBehaviour {
+  // Prefab mesh references
   public GameObject crossMesh;
   public GameObject noughtMesh;
   public GameObject globeMesh;
@@ -19,9 +20,31 @@ public class SquareArt : MonoBehaviour {
       crossMesh.SetActive(value == Symbol.Cross);
       noughtMesh.SetActive(value == Symbol.Nought);
       globeMesh.SetActive(value != Symbol.Cross);
+
+      AudioClip sfx = null;
+      switch(value) {
+        case Symbol.Cross:
+          sfx = explosion;
+          break;
+
+        case Symbol.Nought:
+          sfx = shield;
+          break;
+      }
+
+      if(sfx != null) {
+        _audioPlayer.PlayOneShot(sfx);
+      }
     }
   }
 
+  // Audio asset references
+  public AudioClip explosion; // X Effect
+  public AudioClip shield;    // O Effect
+
+  private AudioSource _audioPlayer;
+
+  // Vector Spin Stuff
   public float spinRate = 60;
   public float bobbingFrequency = 1;
   public float bobbingAmplitude = 0.15f;
@@ -34,7 +57,7 @@ public class SquareArt : MonoBehaviour {
   private Vector3 _rotationVector;
 
   void Awake() {
-
+    _audioPlayer = GetComponent<AudioSource>();
   }
 
   void Start() {

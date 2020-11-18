@@ -3,7 +3,12 @@ All Pillars Point to Eta (PIA03515) - NASA/JPL-Caltech/University of Colorado, i
 
 Audio:
 ambient-loop.ogg (Slowed Down 30%) - Original by Gobusto, opengameart.org/content/ambient-noise
+shields_up - Original by Gobusto, opengameart.org/content/ambient-pulse-noise
 Menu Clicks 1 and 2 - Original by dawith, opengameart.org/content/zippo-click-sound
+big_explosion.ogg: A combination of:
+  hjm-big_explosion_3.wav - by Varkalandar, opengameart.org/content/big-low-frequency-explosion-boom
+  Muffled Distant Explosion.wav - by NenadSimic, opengameart.org/content/muffled-distant-explosion
+
 
 VFX:
 Blur Shader: denisnk, pastebin.com/wVxpxpvt
