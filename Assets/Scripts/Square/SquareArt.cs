@@ -62,7 +62,8 @@ public class SquareArt : MonoBehaviour {
 
   void Start() {
     _bobbingCycleTimeElapsed = Random.Range(0f, 2*Mathf.PI);
-    _bobbingCycleTimeElapsed = 0;
+    transform.Rotate(new Vector3(0, Random.Range(0f, 360f), 0));
+    // _bobbingCycleTimeElapsed = 0;
     _previousBobbingAmount = Vector3.zero;
 
     // Initialize holding vars
