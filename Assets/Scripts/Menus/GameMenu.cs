@@ -7,16 +7,19 @@ public class GameMenu : MonoBehaviour {
 
   public List<GameObject> playerOneOptions;
   public List<GameObject> playerTwoOptions;
+  public GameObject board;
 
   private List<Toggle> _playerOneToggles;
   private List<Toggle> _playerTwoToggles;
 
   private bool _isSwitching = false;
 
-  public GameObject canvas;
-  public GameObject board;
+  private Canvas _canvas;
 
   void Awake() {
+    _canvas = GetComponentInParent<Canvas>();
+
+
     _playerOneToggles = playerOneOptions.ConvertAll<Toggle>(button => button.GetComponent<Toggle>());
     _playerTwoToggles = playerTwoOptions.ConvertAll<Toggle>(button => button.GetComponent<Toggle>());
   }
@@ -29,7 +32,7 @@ public class GameMenu : MonoBehaviour {
       return;
     }
 
-    canvas.SetActive(false);
+    _canvas.gameObject.SetActive(false);
     gameObject.SetActive(false);
     board.GetComponent<Board>().startGame();
   }

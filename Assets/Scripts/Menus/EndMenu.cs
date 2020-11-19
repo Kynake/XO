@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EndMenu : MonoBehaviour {
 
-  public GameObject canvas;
-  public GameObject winnerText;
-
-  private Text _winner;
+  private Canvas _canvas;
+  private TextMeshProUGUI _winnerDisplay;
 
   void Awake() {
-    _winner = winnerText.GetComponent<Text>();
+    _winnerDisplay = GetComponentInChildren<TextMeshProUGUI>();
+    _canvas = GetComponentInParent<Canvas>();
   }
 
   public void showEndgame(Symbol winner, Symbol startingPlayer) {
     gameObject.SetActive(true);
 
     if(winner == Symbol.None) {
-      _winner.text = "Draw";
+      _winnerDisplay.text = "Draw";
     } else {
-      _winner.text = $"Player {(winner == startingPlayer? 1 : 2)} Wins!";
+      _winnerDisplay.text = $"Player {(winner == startingPlayer? 1 : 2)} Wins!";
     }
 
-    canvas.SetActive(true);
+    _canvas.gameObject.SetActive(true);
   }
 }

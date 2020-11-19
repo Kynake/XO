@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class CreditsMenu : MonoBehaviour {
 
   public TextAsset credits;
 
   void Awake() {
-    Text creditsDisplay = gameObject.GetComponentInChildren<Text>();
+    TextMeshProUGUI creditsDisplay = GetComponentInChildren<TMPro.TextMeshProUGUI>();
     creditsDisplay.text = credits.text;
   }
 
