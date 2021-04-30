@@ -11,6 +11,7 @@ TagManager:
   - Hard
   - Player One
   - Player Two
+  - Network
   layers:
   - Default
   - TransparentFX
