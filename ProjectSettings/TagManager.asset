@@ -12,6 +12,7 @@ TagManager:
   - Player One
   - Player Two
   - Network
+  - Square
   layers:
   - Default
   - TransparentFX
