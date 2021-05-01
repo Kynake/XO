@@ -14,7 +14,7 @@ public class Square : MonoBehaviour {
       return _currentSymbol;
     }
     set {
-      if(_currentSymbol == value) {
+      if(value != Symbol.None && value == _currentSymbol) {
         return;
       }
       _currentSymbol = value;
@@ -36,8 +36,8 @@ public class Square : MonoBehaviour {
 
     // TODO make this into a delegate that the board subscribes to
     // Run Board function
-    
-    // _parentBoard.cycleSymbol(this);
+
+    _parentBoard.cycleSymbol(this);
 
   }
 }
