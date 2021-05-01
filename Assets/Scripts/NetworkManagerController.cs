@@ -27,4 +27,11 @@ public class NetworkManagerController : MonoBehaviour {
         _ipTransport = GetComponent<UNetTransport>();
         _relayedTransport = GetComponent<PhotonRealtimeTransport>();
     }
+
+    public static Symbol getNetUserSymbol(ulong userID) {
+        NetworkManager.Singleton.ConnectedClients.TryGetValue(userID, out var client);
+        return client != null
+            ? client.PlayerObject.gameObject.GetComponent<PlayerState>().playerSymbol
+            : Symbol.None;
+    }
 }
