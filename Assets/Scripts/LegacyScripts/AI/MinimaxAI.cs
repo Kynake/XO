@@ -26,7 +26,7 @@ public class MinimaxAI : AI {
     bestMove.score = 100 * -(int) player;
 
     // Only play recursively if there's no winner
-    Symbol winner = Board.checkWinner(board);
+    Symbol winner = BoardLegacy.checkWinner(board);
     if(winner != Symbol.None) {
       bestMove.score = (int) winner;
       return false;

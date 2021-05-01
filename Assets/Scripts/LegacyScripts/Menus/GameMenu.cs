@@ -34,7 +34,7 @@ public class GameMenu : MonoBehaviour {
 
     _canvas.gameObject.SetActive(false);
     gameObject.SetActive(false);
-    board.GetComponent<Board>().startGame();
+    board.GetComponent<BoardLegacy>().startGame();
   }
 
   public void playerOneToggle(GameObject button) {
@@ -57,7 +57,7 @@ public class GameMenu : MonoBehaviour {
         difficulty = AIType.Human;
         break;
     }
-    board.GetComponent<Board>().setPlayerOneAI(difficulty);
+    board.GetComponent<BoardLegacy>().setPlayerOneAI(difficulty);
   }
 
   public void playerTwoToggle(GameObject button) {
@@ -80,7 +80,7 @@ public class GameMenu : MonoBehaviour {
         difficulty = AIType.Human;
         break;
     }
-    board.GetComponent<Board>().setPlayerTwoAI(difficulty);
+    board.GetComponent<BoardLegacy>().setPlayerTwoAI(difficulty);
   }
 
   private void playerToggle(GameObject button, List<Toggle> toggles) {
