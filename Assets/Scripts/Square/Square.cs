@@ -36,7 +36,8 @@ public class Square : MonoBehaviour {
 
     // TODO make this into a delegate that the board subscribes to
     // Run Board function
-    _parentBoard.cycleSymbol(this);
+    
+    // _parentBoard.cycleSymbol(this);
 
   }
 }

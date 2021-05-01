@@ -1125,13 +1125,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: e879c6e6616dd6f408a6e6e1901e4b50, type: 3}
-      propertyPath: m_DynamicOccludee
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e879c6e6616dd6f408a6e6e1901e4b50, type: 3}
       propertyPath: m_Name
       value: Board
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e879c6e6616dd6f408a6e6e1901e4b50, type: 3}
+      propertyPath: m_TagString
+      value: Network
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e879c6e6616dd6f408a6e6e1901e4b50, type: 3}
@@ -1478,10 +1478,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2063440525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d431397f418ad649a2399e8e80f4be9, type: 3}
+  m_Script: {fileID: 11500000, guid: ea6317a5453dc074fa40e8c5cf4ef098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingPlayer: 1
 --- !u!4 &2063440528 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e879c6e6616dd6f408a6e6e1901e4b50, type: 3}
