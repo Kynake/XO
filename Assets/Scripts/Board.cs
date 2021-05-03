@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
 using MLAPI.Messaging;
+using MLAPI.NetworkVariable;
 
 public class Board : NetBehaviour {
   private class BoardState {
@@ -27,39 +29,125 @@ public class Board : NetBehaviour {
     }
   }
 
+  [Header("Game Logic")]
+  public Symbol startingPlayer = Symbol.None;
+
+  // Custom handling when syncing
   private BoardState _boardState;
+  private Dictionary<ulong, PlayerState> _players = new Dictionary<ulong, PlayerState>(2);
+
+  // Netowrk Variables
+  [SerializeField]
+  private NetworkVariable<GameState> _gameState = new NetworkVariable<GameState>(new NetworkVariableSettings {
+    WritePermission = NetworkVariablePermission.ServerOnly,
+    ReadPermission = NetworkVariablePermission.Everyone
+  });
+
+  [SerializeField]
+  private NetworkVariable<Symbol> _winner = new NetworkVariable<Symbol>(new NetworkVariableSettings {
+    WritePermission = NetworkVariablePermission.ServerOnly,
+    ReadPermission = NetworkVariablePermission.Everyone
+  });
+
+  [SerializeField]
+  private NetworkVariable<Symbol> _currentPlayer = new NetworkVariable<Symbol>(new NetworkVariableSettings {
+    WritePermission = NetworkVariablePermission.ServerOnly,
+    ReadPermission = NetworkVariablePermission.Everyone
+  });
 
   private void Start() {
     _boardState = new BoardState(GetComponentsInChildren<Square>(), Symbol.None);
+
+    NetworkManager.Singleton.OnServerStarted += initializeServer;
+    NetworkManager.Singleton.OnClientConnectedCallback += givePlayerToClient;
+    NetworkManager.Singleton.OnClientDisconnectCallback += removePlayer;
   }
 
-  public void cycleSymbol(Square square) {
+  public void setInitialGameState() {
+    _boardState.fillBoard(Symbol.None);
+    _players.Clear();
     if(IsServer) {
-      cycleSymbol(_boardState.IndexOf(square));
-    } else {
-      RequestCycleSymbol_ServerRpc(_boardState.IndexOf(square));
+      _gameState.Value = GameState.NotStarted;
+      _winner.Value = Symbol.None;
+      _currentPlayer.Value = startingPlayer;
     }
   }
 
-  private void cycleSymbol(int index) {
+  private void initializeServer() {
+    setInitialGameState();
+    if(IsHost) {
+      givePlayerToClient(OwnerClientId);
+    }
+  }
+
+  private void givePlayerToClient(ulong playerID) {
+    if(IsThinClient) {
+      setInitialGameState();
+    }
+
+    const int maxPlayers = 2;
     if(!IsServer) {
       return;
     }
 
-    var newSymbol = _boardState[index] == Symbol.None? Symbol.Cross : _boardState[index].other();
+    Debug.Log("New client connection");
+    if(_players.Count < maxPlayers) {
+      var player = NetworkManagerController.playerFromID(playerID);
+      player.playerSymbol = _players.Count == 0? startingPlayer : startingPlayer.other();
 
-    // Update Server BoardState
-    _boardState[index] = newSymbol;
+      _players.Add(playerID, player);
 
-    // Propagate update to clients
-    ResponseCycleSymbol_ClientRpc(index, newSymbol);
+      _gameState.Value = _players.Count == maxPlayers? GameState.InProgress : GameState.NotStarted;
+    } else {
+      Debug.Log("More than 2 Clients, client will not receive Symbol");
+    }
   }
 
+  private void removePlayer(ulong playerID) {
+    if(_players.Remove(playerID)) {
+      _gameState.Value = GameState.Ended;
+      NetworkManager.Singleton.StopServer();
+    }
+  }
+
+  public void clickSquare(Square square) {
+    if(!IsClient) {
+      return;
+    }
+
+    requestClickSquare_ServerRpc(_boardState.IndexOf(square));
+  }
+
+  private void playOnSquare(Symbol player, int square) {
+    if(_gameState.Value == GameState.InProgress && _currentPlayer.Value == player && _boardState[square] == Symbol.None) {
+      // Update board and game Serverside
+      _boardState[square] = player;
+      _currentPlayer.Value = player.other();
+
+      updateClientBoard_ClientRpc(square, player);
+
+      // winner = checkWinner
+      // if winner || no moves
+      // endgame
+    }
+
+    Debug.Log($"Move from {player} on square {square} is illegal");
+  }
+
+  /*********** RPCs ***********/
   [ServerRpc(RequireOwnership = false)]
-  private void RequestCycleSymbol_ServerRpc(int index) => cycleSymbol(index);
+  private void requestClickSquare_ServerRpc(int squareIndex, ServerRpcParams rpcParams = default) {
+    if(!IsServer) {
+      return;
+    }
+
+    if(_players.TryGetValue(rpcParams.Receive.SenderClientId, out var player)) {
+      playOnSquare(player.playerSymbol, squareIndex);
+    }
+  }
 
   [ClientRpc]
-  private void ResponseCycleSymbol_ClientRpc(int index, Symbol symbol) {
-    _boardState[index] = symbol;
+  private void updateClientBoard_ClientRpc(int square, Symbol symbol) {
+    _boardState[square] = symbol;
   }
 }

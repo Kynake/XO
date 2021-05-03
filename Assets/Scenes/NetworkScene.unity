@@ -1386,7 +1386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DrawOffset: {x: 10, y: 10}
-  LabelColor: {r: 0, g: 0, b: 0, a: 1}
+  LabelColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &2012360899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1481,6 +1481,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea6317a5453dc074fa40e8c5cf4ef098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingPlayer: 1
+  _gameState:
+    m_InternalValue: 0
+  _winner:
+    m_InternalValue: 0
+  _currentPlayer:
+    m_InternalValue: 0
 --- !u!4 &2063440528 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e879c6e6616dd6f408a6e6e1901e4b50, type: 3}

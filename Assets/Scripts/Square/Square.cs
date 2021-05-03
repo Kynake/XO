@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Square : MonoBehaviour {
-
-
   private Board _parentBoard;
   private SquareArt _squareArt;
 
@@ -37,7 +35,7 @@ public class Square : MonoBehaviour {
     // TODO make this into a delegate that the board subscribes to
     // Run Board function
 
-    _parentBoard.cycleSymbol(this);
+    _parentBoard.clickSquare(this);
 
   }
 }

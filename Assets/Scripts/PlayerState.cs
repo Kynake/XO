@@ -6,6 +6,7 @@ using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 
 public class PlayerState : NetBehaviour {
+  [SerializeField]
   private NetworkVariable<Symbol> _playerSymbol = new NetworkVariable<Symbol>(new NetworkVariableSettings {
     WritePermission = NetworkVariablePermission.ServerOnly,
     ReadPermission = NetworkVariablePermission.Everyone
