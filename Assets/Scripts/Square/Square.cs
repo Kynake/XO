@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Square : MonoBehaviour {
-  private Board _parentBoard;
+  public delegate void OnClickDelegate();
+  public OnClickDelegate OnClick;
+
   private SquareArt _squareArt;
 
   private Symbol _currentSymbol;
@@ -21,7 +23,6 @@ public class Square : MonoBehaviour {
   }
 
   private void Awake() {
-    _parentBoard = GetComponentInParent<Board>();
     _squareArt = GetComponentInChildren<SquareArt>();
   }
 
@@ -29,13 +30,5 @@ public class Square : MonoBehaviour {
     currentSymbol = Symbol.None;
   }
 
-  private void OnMouseDown() {
-    print("Click");
-
-    // TODO make this into a delegate that the board subscribes to
-    // Run Board function
-
-    _parentBoard.clickSquare(this);
-
-  }
+  private void OnMouseDown() => OnClick?.Invoke();
 }

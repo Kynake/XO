@@ -16,8 +16,6 @@ public class Board : NetBehaviour {
         _boardSquares[i].currentSymbol = symbolFill;
       }
     }
-
-    public int IndexOf(Square square) => _boardSquares.IndexOf(square);
     public void fillBoard(Symbol fill) => _boardSquares.ForEach(square => square.currentSymbol = fill);
 
     public Symbol this[int i] {
@@ -25,7 +23,6 @@ public class Board : NetBehaviour {
       set {
         _boardSquares[i].currentSymbol = value;
       }
-
     }
   }
 
@@ -56,7 +53,19 @@ public class Board : NetBehaviour {
   });
 
   private void Start() {
-    _boardState = new BoardState(GetComponentsInChildren<Square>(), Symbol.None);
+    var squares = GetComponentsInChildren<Square>();
+    _boardState = new BoardState(squares, Symbol.None);
+
+    // Create bound functions for each click event and its respective index
+    for(int i = 0; i < squares.Length; i++) {
+      var closure = i;
+      squares[i].OnClick += () => {
+        if(!IsClient) {
+          return;
+        }
+        requestClickSquare_ServerRpc(closure);
+      };
+    }
 
     NetworkManager.Singleton.OnServerStarted += initializeServer;
     NetworkManager.Singleton.OnClientConnectedCallback += givePlayerToClient;
@@ -108,14 +117,6 @@ public class Board : NetBehaviour {
       _gameState.Value = GameState.Ended;
       NetworkManager.Singleton.StopServer();
     }
-  }
-
-  public void clickSquare(Square square) {
-    if(!IsClient) {
-      return;
-    }
-
-    requestClickSquare_ServerRpc(_boardState.IndexOf(square));
   }
 
   private void playOnSquare(Symbol player, int square) {
