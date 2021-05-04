@@ -6,7 +6,7 @@ using MLAPI.Messaging;
 using MLAPI.NetworkVariable;
 
 public class Board : NetBehaviour {
-  private class BoardState {
+  public class BoardState {
     private List<Square> _boardSquares;
 
     public BoardState(Square[] squares, Symbol symbolFill) {
@@ -23,6 +23,20 @@ public class Board : NetBehaviour {
       set {
         _boardSquares[i].currentSymbol = value;
       }
+    }
+
+    public int Count {
+      get => _boardSquares.Count;
+    }
+
+    public bool Contains(Symbol filter) {
+      foreach(var square in _boardSquares) {
+        if(square.currentSymbol == filter) {
+          return true;
+        }
+      }
+
+      return false;
     }
   }
 
@@ -99,7 +113,6 @@ public class Board : NetBehaviour {
       return;
     }
 
-    Debug.Log("New client connection");
     if(_players.Count < maxPlayers) {
       var player = NetworkManagerController.playerFromID(playerID);
       player.playerSymbol = _players.Count == 0? startingPlayer : startingPlayer.other();
@@ -108,14 +121,13 @@ public class Board : NetBehaviour {
 
       _gameState.Value = _players.Count == maxPlayers? GameState.InProgress : GameState.NotStarted;
     } else {
-      Debug.Log("More than 2 Clients, client will not receive Symbol");
+      Debug.Log("More than 2 Clients, new client will not receive Symbol");
     }
   }
 
   private void removePlayer(ulong playerID) {
     if(_players.Remove(playerID)) {
-      _gameState.Value = GameState.Ended;
-      NetworkManager.Singleton.StopServer();
+      StartCoroutine(endGame());
     }
   }
 
@@ -127,12 +139,90 @@ public class Board : NetBehaviour {
 
       updateClientBoard_ClientRpc(square, player);
 
-      // winner = checkWinner
-      // if winner || no moves
-      // endgame
+      _winner.Value = checkWinner(_boardState);
+      if(_winner.Value != Symbol.None || !_boardState.Contains(Symbol.None)) {
+        StartCoroutine(endGame());
+      }
+    }
+  }
+
+  private IEnumerator endGame() {
+    if(!IsServer) {
+      yield break;
     }
 
-    Debug.Log($"Move from {player} on square {square} is illegal");
+    Debug.Log("Endgame");
+    _gameState.Value = GameState.Ended;
+
+    yield return new WaitForSeconds(3);
+
+    if(_winner.Value != Symbol.None) {
+      // Win
+      Debug.Log($"{_winner.Value} Wins!");
+
+    } else if(!_boardState.Contains(Symbol.None)) {
+      // Draw
+      Debug.Log("Draw");
+
+    } else {
+      // Client disconnect
+      Debug.Log("Client Disconnected");
+
+    }
+
+    NetworkManager.Singleton.StopServer();
+
+  }
+
+  public static Symbol checkWinner(BoardState board) {
+    int boardSize = (int) Mathf.Sqrt(board.Count);
+
+    List<int> countRows = new List<int>(boardSize);
+    List<int> countColumns = new List<int>(boardSize);
+
+    for(int i = 0; i < boardSize; i++) {
+      countRows.Add(0);
+      countColumns.Add(0);
+    }
+
+    int mainDiagonal = 0;
+    int otherDiagonal = 0;
+
+    // Add up score of Rows, Columns and Diagonals
+    for(int i = 0; i < board.Count; i++) {
+      int row = i / boardSize;
+      int column = i % boardSize;
+
+      // Rows
+      countRows[row] += (int) board[i];
+      if(Mathf.Abs(countRows[row]) == boardSize) {
+        return (Symbol)(countRows[row] / boardSize);
+      }
+
+      // Columns
+      countColumns[column] += (int) board[i];
+      if(Mathf.Abs(countColumns[column]) == boardSize) {
+        return (Symbol)(countColumns[column] / boardSize);
+      }
+
+      // Main Diagonal
+      if(row == column) {
+        mainDiagonal += (int) board[i];
+        if(Mathf.Abs(mainDiagonal) == boardSize) {
+          return (Symbol) (mainDiagonal / boardSize);
+        }
+      }
+
+      // Other Diagonal
+      if(row + column == boardSize - 1) {
+        otherDiagonal += (int) board[i];
+        if(Mathf.Abs(otherDiagonal) == boardSize) {
+          return (Symbol) (otherDiagonal / boardSize);
+        }
+      }
+    }
+
+    return Symbol.None;
   }
 
   /*********** RPCs ***********/
@@ -151,4 +241,9 @@ public class Board : NetBehaviour {
   private void updateClientBoard_ClientRpc(int square, Symbol symbol) {
     _boardState[square] = symbol;
   }
+
+  // [ClientRpc]
+  // private void gameInterrupted_ClientRpc() {
+
+  // }
 }
