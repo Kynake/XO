@@ -66,6 +66,13 @@ public class Board : NetBehaviour {
     ReadPermission = NetworkVariablePermission.Everyone
   });
 
+  // Delegates
+  public delegate void GameEndedDelegate(Symbol winner);
+  public delegate void GameInterruptedDelegate();
+
+  public GameEndedDelegate OnGameEnded;
+  public GameInterruptedDelegate OnGameInterrupted;
+
   private void Start() {
     var squares = GetComponentsInChildren<Square>();
     _boardState = new BoardState(squares, Symbol.None);
@@ -154,20 +161,19 @@ public class Board : NetBehaviour {
     Debug.Log("Endgame");
     _gameState.Value = GameState.Ended;
 
-    yield return new WaitForSeconds(3);
+    yield return new WaitForSeconds(2);
 
     if(_winner.Value != Symbol.None) {
       // Win
-      Debug.Log($"{_winner.Value} Wins!");
+      gameEnded_ClientRpc(_winner.Value);
 
     } else if(!_boardState.Contains(Symbol.None)) {
       // Draw
-      Debug.Log("Draw");
+      gameEnded_ClientRpc(Symbol.None);
 
     } else {
       // Client disconnect
-      Debug.Log("Client Disconnected");
-
+      gameInterrupted_ClientRpc();
     }
 
     NetworkManager.Singleton.StopServer();
@@ -242,8 +248,9 @@ public class Board : NetBehaviour {
     _boardState[square] = symbol;
   }
 
-  // [ClientRpc]
-  // private void gameInterrupted_ClientRpc() {
+  [ClientRpc]
+  private void gameEnded_ClientRpc(Symbol winner) => OnGameEnded?.Invoke(winner);
 
-  // }
+  [ClientRpc]
+  private void gameInterrupted_ClientRpc() => OnGameInterrupted?.Invoke();
 }
