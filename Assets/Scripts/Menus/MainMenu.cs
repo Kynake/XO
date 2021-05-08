@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour {
 
   private void Start() {
     CreditsMenu.OnMainMenuReturn += () => MenuController.toggleMenu(gameObject);
+    TransportMenu.OnMainMenuReturn += () => MenuController.toggleMenu(gameObject);
   }
 
   // Button Actions
