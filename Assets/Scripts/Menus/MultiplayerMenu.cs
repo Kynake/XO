@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TransportMenu : MonoBehaviour {
+public class MultiplayerMenu : MonoBehaviour {
   // Events
-  public delegate void OnSelectIPDelegate();
-  public static OnSelectIPDelegate OnSelectIP;
+  public delegate void OnClickClientDelegate();
+  public static OnClickClientDelegate OnClickClient;
 
-  public delegate void OnSelectPhotonDelegate();
-  public static OnSelectPhotonDelegate OnSelectPhoton;
+  public delegate void OnClickHostDelegate();
+  public static OnClickHostDelegate OnClickHost;
 
   public delegate void OnMainMenuDelegate();
   public static OnMainMenuDelegate OnMainMenuReturn;
@@ -21,7 +21,7 @@ public class TransportMenu : MonoBehaviour {
   }
 
   // Button Actions
-  public void selectIP() => OnSelectIP?.Invoke();
-  public void selectPhoton() => OnSelectPhoton?.Invoke();
+  public void selectClient() => OnClickClient?.Invoke();
+  public void selectHost() => OnClickHost?.Invoke();
   public void returnToMainMenu() => OnMainMenuReturn?.Invoke();
 }
