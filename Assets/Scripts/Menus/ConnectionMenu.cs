@@ -22,6 +22,11 @@ public class ConnectionMenu : MonoBehaviour {
   private TMP_InputField _addressInput;
 
   [SerializeField]
+  private TMP_Text _addressPlaceholder;
+  private const string _placeholderPrompt = " Enter Address...";
+  private const string _placeholderIgnore = " [Ignored]";
+
+  [SerializeField]
   private TMP_Dropdown _transportDropdown;
 
   private void Start() {
@@ -49,16 +54,21 @@ public class ConnectionMenu : MonoBehaviour {
     }
 
     // Gather Info
-    var isHost = true;
-    var transport = NetworkTransportTypes.Direct;
-    var address = "127.0.0.1";
+    var transport = _transportDropdown.value == 0? NetworkTransportTypes.Direct : NetworkTransportTypes.Relayed;
+    var address = _addressInput.text;
+
+    if(address == "" && (!_isHost || transport != NetworkTransportTypes.Direct)) {
+      return;
+    }
 
     // Call Event
-    OnStartGame(isHost, transport, address);
+    print($"Start: Host: {_isHost}, Transport: {transport}, Address: {address}");
+    OnStartGame(_isHost, transport, address);
   }
 
   public void onChangeTransport() {
     _addressInput.interactable = !(_transportDropdown.value == 0 && _isHost);
+    _addressPlaceholder.text = _addressInput.interactable? _placeholderPrompt : _placeholderIgnore;
   }
 
   public void returnToMultiplayerMenu() => OnMultiplayerMenuReturn?.Invoke();

@@ -1848,7 +1848,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1651352614}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.5154432
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3493,6 +3493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _connectionText: {fileID: 1917554269}
   _addressInput: {fileID: 1407437854}
+  _addressPlaceholder: {fileID: 992600220}
   _transportDropdown: {fileID: 113620089}
 --- !u!1001 &1200187896
 PrefabInstance:
@@ -6511,7 +6512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000015258789}
   m_SizeDelta: {x: 0, y: 132.36635}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1001 &2146319614
