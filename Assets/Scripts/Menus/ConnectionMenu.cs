@@ -5,7 +5,7 @@ using TMPro;
 
 public class ConnectionMenu : MonoBehaviour {
   // Events
-  public delegate void OnStartGameDelegate(bool isHost, NetworkTransportTypes transportTypes, string address);
+  public delegate void OnStartGameDelegate(bool isHost, NetworkTransportTypes transport, string address);
   public static OnStartGameDelegate OnStartGame;
 
   public delegate void OnMultiplayerMenuDelegate();
@@ -14,20 +14,20 @@ public class ConnectionMenu : MonoBehaviour {
   private bool _isHost;
 
   [SerializeField]
-  private TMP_Text _connectionText;
+  private TMP_Text _connectionText = null;
   private const string _hostText = "Host";
   private const string _clientText = "Join";
 
   [SerializeField]
-  private TMP_InputField _addressInput;
+  private TMP_InputField _addressInput = null;
 
   [SerializeField]
-  private TMP_Text _addressPlaceholder;
+  private TMP_Text _addressPlaceholder = null;
   private const string _placeholderPrompt = " Enter Address...";
   private const string _placeholderIgnore = " [Ignored]";
 
   [SerializeField]
-  private TMP_Dropdown _transportDropdown;
+  private TMP_Dropdown _transportDropdown = null;
 
   private void Start() {
 

@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour {
   private void Start() {
     CreditsMenu.OnMainMenuReturn += () => MenuController.toggleMenu(gameObject);
     MultiplayerMenu.OnMainMenuReturn += () => MenuController.toggleMenu(gameObject);
+    WaitMenu.OnCancel += () => MenuController.toggleMenu(gameObject);
   }
 
   // Button Actions

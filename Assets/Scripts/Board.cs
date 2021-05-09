@@ -67,11 +67,13 @@ public class Board : NetBehaviour {
   });
 
   // Delegates
+  public delegate void GameStartedDelegate();
   public delegate void GameEndedDelegate(Symbol winner);
   public delegate void GameInterruptedDelegate();
 
-  public GameEndedDelegate OnGameEnded;
-  public GameInterruptedDelegate OnGameInterrupted;
+  public static GameStartedDelegate OnGameStarted;
+  public static GameEndedDelegate OnGameEnded;
+  public static GameInterruptedDelegate OnGameInterrupted;
 
   private void Start() {
     var squares = GetComponentsInChildren<Square>();
@@ -91,6 +93,12 @@ public class Board : NetBehaviour {
     NetworkManager.Singleton.OnServerStarted += initializeServer;
     NetworkManager.Singleton.OnClientConnectedCallback += givePlayerToClient;
     NetworkManager.Singleton.OnClientDisconnectCallback += removePlayer;
+
+    WaitMenu.OnCancel += () => {
+      if(IsServer) {
+        gameInterrupted_ClientRpc();
+      }
+    };
   }
 
   public void setInitialGameState() {
@@ -175,9 +183,6 @@ public class Board : NetBehaviour {
       // Client disconnect
       gameInterrupted_ClientRpc();
     }
-
-    NetworkManager.Singleton.StopServer();
-
   }
 
   public static Symbol checkWinner(BoardState board) {
@@ -247,6 +252,9 @@ public class Board : NetBehaviour {
   private void updateClientBoard_ClientRpc(int square, Symbol symbol) {
     _boardState[square] = symbol;
   }
+
+  [ClientRpc]
+  private void gameStarted_ClientRpc() => OnGameStarted?.Invoke();
 
   [ClientRpc]
   private void gameEnded_ClientRpc(Symbol winner) => OnGameEnded?.Invoke(winner);
