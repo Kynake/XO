@@ -39,6 +39,7 @@ public class ConnectionMenu : MonoBehaviour {
     _connectionText.text = $"{(isHost? _hostText : _clientText)} Game:";
 
     MenuController.toggleMenu(gameObject);
+    onChangeTransport();
   }
 
   // Button Actions
@@ -57,15 +58,7 @@ public class ConnectionMenu : MonoBehaviour {
   }
 
   public void onChangeTransport() {
-    switch(_transportDropdown.value) {
-      case 0:
-        print("IP");
-        break;
-
-      case 1:
-        print("Photon");
-        break;
-    }
+    _addressInput.interactable = !(_transportDropdown.value == 0 && _isHost);
   }
 
   public void returnToMultiplayerMenu() => OnMultiplayerMenuReturn?.Invoke();
