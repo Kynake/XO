@@ -6,6 +6,11 @@ using MLAPI.Transports;
 using MLAPI.Transports.UNET;
 using MLAPI.Transports.PhotonRealtime;
 
+public enum NetworkTransportTypes {
+  Direct,
+  Relayed
+}
+
 public class NetworkManagerController : MonoBehaviour {
   private NetworkManager _netManager = null;
   private NetworkTransport _ipTransport = null;

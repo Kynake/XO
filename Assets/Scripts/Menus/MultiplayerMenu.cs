@@ -15,6 +15,7 @@ public class MultiplayerMenu : MonoBehaviour {
 
   private void Start() {
     MainMenu.OnClickStart += () => MenuController.toggleMenu(gameObject);
+    ConnectionMenu.OnMultiplayerMenuReturn += () => MenuController.toggleMenu(gameObject);
 
     // Start Disabled
     gameObject.SetActive(false);
