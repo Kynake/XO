@@ -62,7 +62,6 @@ public class ConnectionMenu : MonoBehaviour {
     }
 
     // Call Event
-    print($"Start: Host: {_isHost}, Transport: {transport}, Address: {address}");
     OnStartGame(_isHost, transport, address);
   }
 

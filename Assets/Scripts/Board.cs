@@ -264,10 +264,7 @@ public class Board : NetBehaviour {
   private void gameStarted_ClientRpc() => OnGameStarted?.Invoke();
 
   [ClientRpc]
-  private void gameEnded_ClientRpc(Symbol winner) {
-    print("Client GameEnded");
-    OnGameEnded?.Invoke(winner);
-  }
+  private void gameEnded_ClientRpc(Symbol winner) => OnGameEnded?.Invoke(winner);
 
   [ClientRpc]
   private void gameInterrupted_ClientRpc() => OnGameInterrupted?.Invoke();
