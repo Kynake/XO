@@ -25,7 +25,7 @@ public class EndMenu : MonoBehaviour {
       if(winner == Symbol.None) {
         _endgameDisplay.text = "Draw";
       } else {
-        _endgameDisplay.text = $"{winner} Wins!";
+        _endgameDisplay.text = $"{(winner == Symbol.Cross? "Cross" : "Circle")} Wins!";
       }
     } else {
       _endgameDisplay.text = "Game Interrupted";
