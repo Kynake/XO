@@ -147,7 +147,7 @@ public class Board : NetBehaviour {
 
   private void removePlayer(ulong playerID) {
     if(_players.Remove(playerID)) {
-      endGame();
+      StartCoroutine(endGame());
     }
   }
 
@@ -161,26 +161,29 @@ public class Board : NetBehaviour {
 
       _winner.Value = checkWinner(_boardState);
       if(_winner.Value != Symbol.None || !_boardState.Contains(Symbol.None)) {
-        endGame();
+        StartCoroutine(endGame());
       }
     }
   }
 
-  private void endGame() {
+  private IEnumerator endGame() {
     if(!IsServer) {
-      return;
+      yield break;
     }
 
-    Debug.Log("Endgame");
+    const float waitTime = 2;
+
     _gameState.Value = GameState.Ended;
 
 
     if(_winner.Value != Symbol.None) {
       // Win
+      yield return new WaitForSeconds(waitTime);
       gameEnded_ClientRpc(_winner.Value);
 
     } else if(!_boardState.Contains(Symbol.None)) {
       // Draw
+      yield return new WaitForSeconds(waitTime);
       gameEnded_ClientRpc(Symbol.None);
 
     } else {
