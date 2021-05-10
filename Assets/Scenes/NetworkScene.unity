@@ -1229,7 +1229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a66a5f9b4d957644dab02d146d52315a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _background: {fileID: 1372045977}
 --- !u!1 &478536811
 GameObject:
   m_ObjectHideFlags: 0
@@ -3710,10 +3709,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2069218953}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2069218955}
+        m_TargetAssemblyTypeName: EndMenu, Assembly-CSharp
+        m_MethodName: returnToMainMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3721,18 +3720,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1108439446
 MonoBehaviour:
@@ -4827,7 +4814,7 @@ GameObject:
   - component: {fileID: 1372045979}
   m_Layer: 5
   m_Name: BlurredBackground
-  m_TagString: Untagged
+  m_TagString: Background
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7089,7 +7076,7 @@ GameObject:
   - component: {fileID: 2069218955}
   m_Layer: 5
   m_Name: EndMenu
-  m_TagString: Untagged
+  m_TagString: Menu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

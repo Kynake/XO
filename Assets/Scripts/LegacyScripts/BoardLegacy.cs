@@ -87,7 +87,7 @@ public class BoardLegacy : MonoBehaviour {
 
     canvas.SetActive(true);
     endMenu.SetActive(true);
-    _endMenu.showEndgame(_winner, startingPlayer);
+    // _endMenu.showEndgame(_winner, startingPlayer);
 
     initializeGame();
   }

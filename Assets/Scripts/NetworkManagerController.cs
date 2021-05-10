@@ -67,8 +67,8 @@ public class NetworkManagerController : MonoBehaviour {
 
     ConnectionMenu.OnStartGame += startGameConnection;
     WaitMenu.OnCancel += disconnect;
-    Board.OnGameEnded += (Symbol winner) => disconnect();
-    Board.OnGameInterrupted += disconnect;
+    Board.OnGameEnded += (Symbol winner) => StartCoroutine(disconnectAfterDelay(2));
+    Board.OnGameInterrupted += () => StartCoroutine(disconnectAfterDelay(2));
   }
 
   private void startGameConnection(bool isHost, NetworkTransportTypes transportType, string address) {
@@ -95,6 +95,11 @@ public class NetworkManagerController : MonoBehaviour {
     OnConnected?.Invoke(isHost);
   }
 
+  private IEnumerator disconnectAfterDelay(float delaySeconds) {
+    yield return new WaitForSeconds(delaySeconds);
+    disconnect();
+  }
+
   private void disconnect() {
     if(_netManager.IsHost) {
       _netManager.StopHost();
@@ -102,6 +107,14 @@ public class NetworkManagerController : MonoBehaviour {
       _netManager.StopServer();
     } else if(_netManager.IsClient) {
       _netManager.StopClient();
+    }
+  }
+
+  private void stopServer() {
+    if(_netManager.IsHost) {
+      _netManager.StopHost();
+    } else if(_netManager.IsServer) {
+      _netManager.StopServer();
     }
   }
 

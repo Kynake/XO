@@ -1,28 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class EndMenu : MonoBehaviour {
+  // Events
+  public delegate void OnMainMenuDelegate();
+  public static OnMainMenuDelegate OnMainMenuReturn;
 
-  private Canvas _canvas;
-  private TextMeshProUGUI _winnerDisplay;
+  private TextMeshProUGUI _endgameDisplay;
 
-  void Awake() {
-    _winnerDisplay = GetComponentInChildren<TextMeshProUGUI>();
-    _canvas = GetComponentInParent<Canvas>();
+  void Start() {
+    _endgameDisplay = GetComponentInChildren<TextMeshProUGUI>();
+
+    Board.OnGameEnded += (Symbol winner) => revealEndgame(false, winner);
+    Board.OnGameInterrupted += () => revealEndgame(true, Symbol.None);
+
+    // Start Disabled
+    gameObject.SetActive(false);
   }
 
-  public void showEndgame(Symbol winner, Symbol startingPlayer) {
-    gameObject.SetActive(true);
+  private IEnumerator showEndgame(bool isInterrupted, Symbol winner) {
+    yield return new WaitForSeconds(2);
 
-    if(winner == Symbol.None) {
-      _winnerDisplay.text = "Draw";
+    if(!isInterrupted) {
+      if(winner == Symbol.None) {
+        _endgameDisplay.text = "Draw";
+      } else {
+        _endgameDisplay.text = $"{winner} Wins!";
+      }
     } else {
-      _winnerDisplay.text = $"Player {(winner == startingPlayer? 1 : 2)} Wins!";
+      _endgameDisplay.text = "Game Interrupted";
     }
 
-    _canvas.gameObject.SetActive(true);
   }
+
+  private void revealEndgame(bool isInterrupted, Symbol winner) {
+    MenuController.toggleMenu(gameObject);
+    StartCoroutine(showEndgame(isInterrupted, winner));
+  }
+
+  // Button Actions
+  public void returnToMainMenu() => OnMainMenuReturn?.Invoke();
 }

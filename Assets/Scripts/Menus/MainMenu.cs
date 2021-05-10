@@ -11,10 +11,13 @@ public class MainMenu : MonoBehaviour {
   public static OnClickCreditsDelegate OnClickCredits;
 
   private void Start() {
-    CreditsMenu.OnMainMenuReturn += () => MenuController.toggleMenu(gameObject);
-    MultiplayerMenu.OnMainMenuReturn += () => MenuController.toggleMenu(gameObject);
-    WaitMenu.OnCancel += () => MenuController.toggleMenu(gameObject);
+    CreditsMenu.OnMainMenuReturn     += returnToMainMenu;
+    MultiplayerMenu.OnMainMenuReturn += returnToMainMenu;
+    WaitMenu.OnCancel                += returnToMainMenu;
+    EndMenu.OnMainMenuReturn         += returnToMainMenu;
   }
+
+  private void returnToMainMenu() => MenuController.toggleMenu(gameObject);
 
   // Button Actions
   public void startGame() => OnClickStart?.Invoke();

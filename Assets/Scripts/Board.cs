@@ -134,7 +134,12 @@ public class Board : NetBehaviour {
 
       _players.Add(playerID, player);
 
-      _gameState.Value = _players.Count == maxPlayers? GameState.InProgress : GameState.NotStarted;
+      // Start The Game
+      if(_players.Count == maxPlayers) {
+        _gameState.Value = GameState.InProgress;
+        gameStarted_ClientRpc();
+      }
+
     } else {
       Debug.Log("More than 2 Clients, new client will not receive Symbol");
     }
@@ -142,7 +147,7 @@ public class Board : NetBehaviour {
 
   private void removePlayer(ulong playerID) {
     if(_players.Remove(playerID)) {
-      StartCoroutine(endGame());
+      endGame();
     }
   }
 
@@ -156,20 +161,19 @@ public class Board : NetBehaviour {
 
       _winner.Value = checkWinner(_boardState);
       if(_winner.Value != Symbol.None || !_boardState.Contains(Symbol.None)) {
-        StartCoroutine(endGame());
+        endGame();
       }
     }
   }
 
-  private IEnumerator endGame() {
+  private void endGame() {
     if(!IsServer) {
-      yield break;
+      return;
     }
 
     Debug.Log("Endgame");
     _gameState.Value = GameState.Ended;
 
-    yield return new WaitForSeconds(2);
 
     if(_winner.Value != Symbol.None) {
       // Win
@@ -257,7 +261,10 @@ public class Board : NetBehaviour {
   private void gameStarted_ClientRpc() => OnGameStarted?.Invoke();
 
   [ClientRpc]
-  private void gameEnded_ClientRpc(Symbol winner) => OnGameEnded?.Invoke(winner);
+  private void gameEnded_ClientRpc(Symbol winner) {
+    print("Client GameEnded");
+    OnGameEnded?.Invoke(winner);
+  }
 
   [ClientRpc]
   private void gameInterrupted_ClientRpc() => OnGameInterrupted?.Invoke();
