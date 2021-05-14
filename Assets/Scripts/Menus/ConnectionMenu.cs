@@ -66,8 +66,14 @@ public class ConnectionMenu : MonoBehaviour {
   }
 
   public void onChangeTransport() {
-    _addressInput.interactable = !(_transportDropdown.value == 0 && _isHost);
+    var isIPHost = _transportDropdown.value == 0 && _isHost;
+
+    _addressInput.interactable = !isIPHost;
     _addressPlaceholder.text = _addressInput.interactable? _placeholderPrompt : _placeholderIgnore;
+
+    if(isIPHost) {
+      _addressInput.text = "";
+    }
   }
 
   public void returnToMultiplayerMenu() => OnMultiplayerMenuReturn?.Invoke();
