@@ -23,7 +23,8 @@ public class ConnectionMenu : MonoBehaviour {
 
   [SerializeField]
   private TMP_Text _addressPlaceholder = null;
-  private const string _placeholderPrompt = " Enter Address...";
+  private const string _placeholderIPPrompt = " Enter IP/Address...";
+  private const string _placeholderPhotonPrompt = " Enter Room Name...";
   private const string _placeholderIgnore = " [Ignored]";
 
   [SerializeField]
@@ -69,7 +70,11 @@ public class ConnectionMenu : MonoBehaviour {
     var isIPHost = _transportDropdown.value == 0 && _isHost;
 
     _addressInput.interactable = !isIPHost;
-    _addressPlaceholder.text = _addressInput.interactable? _placeholderPrompt : _placeholderIgnore;
+    if(_addressInput.interactable) {
+      _addressPlaceholder.text = _transportDropdown.value == 0? _placeholderIPPrompt : _placeholderPhotonPrompt;
+    } else {
+      _addressPlaceholder.text = _placeholderIgnore;
+    }
 
     if(isIPHost) {
       _addressInput.text = "";
