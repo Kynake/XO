@@ -47,7 +47,7 @@ public class Board : NetBehaviour {
   private BoardState _boardState;
   private Dictionary<ulong, PlayerState> _players = new Dictionary<ulong, PlayerState>(2);
 
-  // Netowrk Variables
+  // Network Variables
   [SerializeField]
   private NetworkVariable<GameState> _gameState = new NetworkVariable<GameState>(new NetworkVariableSettings {
     WritePermission = NetworkVariablePermission.ServerOnly,
